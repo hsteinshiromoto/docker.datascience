@@ -1,0 +1,5 @@
+# Misc.
+git
+gosu
+wget
+graphviz
