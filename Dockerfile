@@ -15,8 +15,6 @@ ARG DEBIAN_FRONTEND=noninteractive
 # ---
 ENV LANG=C.UTF-8 \
     LC_ALL=C.UTF-8
-ENV PROJECT_ROOT /home/jovyan/work
-ENV PYTHONPATH $PROJECT_ROOT
 ENV TZ Australia/Sydney
 ENV JUPYTER_ENABLE_LAB=yes
 
@@ -59,7 +57,6 @@ RUN mkdir -p /home/docker_user
 WORKDIR /home/docker_user
 
 # N.B.: Keep the order entrypoint than cmd
-
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 EXPOSE 8888
