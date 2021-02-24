@@ -2,6 +2,13 @@
 # Created by https://www.toptal.com/developers/gitignore/api/python,vscode,pycharm,jupyternotebooks,macos,linux,windows
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,vscode,pycharm,jupyternotebooks,macos,linux,windows
 
+## Folders ##
+.local/
+.jupyter/
+
+## Files ##
+.bash_history
+
 ### JupyterNotebooks ###
 # gitignore template for Jupyter Notebooks
 # website: http://jupyter.org/
