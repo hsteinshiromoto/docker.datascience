@@ -41,7 +41,6 @@ make_variables() {
     set +a
 
     PROJECT_ROOT=$(pwd)
-    PROJECT_NAME=$(basename ${PROJECT_ROOT})
 
     DOCKER_IMAGE=hsteinshiromoto/datascience
     DOCKER_TAG=${DOCKER_TAG:-latest}
@@ -74,7 +73,7 @@ run_container() {
 
     sleep 5
 
-    JUPYTER_PORT=$(docker ps -f "ancestor=${PROJECT_NAME}" | grep -o "0.0.0.0:[0-9]*->8888" | cut -d ":" -f 2 | head -n 1)
+    JUPYTER_PORT=$(docker ps -f "ancestor=${DOCKER_IMAGE_TAG}" | grep -o "0.0.0.0:[0-9]*->8888" | cut -d ":" -f 2 | head -n 1)
 
     echo -e "Port mapping: ${JUPYTER_PORT}"
 
@@ -89,6 +88,11 @@ run_container() {
 while :
 do
     case "$1" in
+        -e | --enter)
+            enter  # Call your function
+            exit 0
+            ;;
+
         -h | --help)
             display_help  # Call your function
             exit 0

@@ -8,16 +8,16 @@ fi
 
 ## Install Python Dependencies
 if [[ $1 = "requirements" ]]; then
- 	echo ">>> Installing Required Modules .."
- 	cd /usr/local/bin/
-	python3 -m pip install -U pip setuptools wheel
+	echo ">>> Installing Required Modules .."
+	cd /usr/local/bin/
+	pip3 install -U pip setuptools wheel
 	pip3 install -r /usr/local/requirements.txt
 	echo ">>> Done!"
 fi
 
 ## Make Dataset
 if [[ $1 == "data" ]]; then
-	bash run_python.sh requirements
+	bash python -m setup_python.sh requirements
 	python src/data/make_dataset.py data/raw data/processed
 fi
 
