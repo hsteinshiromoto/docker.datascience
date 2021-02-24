@@ -33,6 +33,14 @@ build:
 
 	@echo "Building docker image ${DOCKER_IMAGE_TAG}"
 	docker build --build-arg BUILD_DATE=${BUILD_DATE} -t ${DOCKER_IMAGE_TAG} .
+	@echo "Done"
+
+push:
+	$(eval DOCKER_IMAGE_TAG=docker.pkg.github.com/hsteinshiromoto/docker.datascience/${DOCKER_IMAGE}:${DOCKER_TAG})
+
+	@echo "Pushing docker image ${DOCKER_IMAGE_TAG} to docker.pkg.github.com/hsteinshiromoto"
+	docker push ${DOCKER_IMAGE_TAG}
+	@echo "Done"
 
 
 #################################################################################
