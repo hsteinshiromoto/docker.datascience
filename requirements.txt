@@ -1,25 +1,22 @@
-# local package
--e .
-
-# external requirements
+# Base Modules
 click
 Sphinx
 coverage
 awscli
 flake8
 python-dotenv>=0.5.1
-theano
-pymc3
-arviz
+
+# Data and Science Modules
+jupyterlab
 numpy
 pandas
 seaborn
-xgboost
-pandas-profiling[notebook]
 dask[complete]
 statsmodels
 scikit-learn
 bokeh
-
-# Jupyter settings
-jupyterlab >= 3
+xgboost
+theano
+pymc3
+arviz
+# pandas-profiling[notebook]
