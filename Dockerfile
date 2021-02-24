@@ -58,7 +58,9 @@ RUN bash /usr/local/bin/setup_python.sh test_environment && \
 RUN mkdir -p /home/docker_user
 WORKDIR /home/docker_user
 
+# N.B.: Keep the order entrypoint than cmd
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+
 EXPOSE 8888
 CMD ["jupyter", "lab", "--port=8888", "--no-browser", "--ip=0.0.0.0", "--allow-root"]
-
-# ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
