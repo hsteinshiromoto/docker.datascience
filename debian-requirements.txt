@@ -3,3 +3,6 @@ git
 gosu
 wget
 graphviz
+make
+vim
+curl
