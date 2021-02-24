@@ -1,2 +1,5 @@
 *.DS_Store
 *.pyc
+.bash_history
+
+.local/
