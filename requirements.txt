@@ -19,4 +19,4 @@ xgboost
 theano
 pymc3
 arviz
-# pandas-profiling[notebook]
+# pandas-profiling[notebook] N.B. This raises bugs with one of its dependencies: numba
