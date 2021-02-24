@@ -5,13 +5,11 @@ set -e
 CURRENT_UID=${uid:-9999}
 
 # If "-e docker_user={custom/local user id}" flag is not set for "docker run" command, use docker_user as default
-CONTAINER_USERNAME=${DOCKER_USER:-"docker_user"}
+DOCKER_USER=${DOCKER_USER:-docker_user}
+CONTAINER_PASSWORD=1234
 
 # Create user called "docker" with selected UID
-useradd --shell /bin/bash -p $(openssl passwd -1 $CONTAINER_PASSWORD) -u $CURRENT_UID -o -c "" -m --no-create-home $CONTAINER_USERNAME
-
-# Start SSH Server
-service ssh start
+useradd --shell /bin/bash -p $(openssl passwd -1 $CONTAINER_PASSWORD) -u $CURRENT_UID -o -c "" -m $DOCKER_USER
 
 # Execute process
-exec gosu $CONTAINER_USERNAME "$@"
+exec gosu $DOCKER_USER "$@"
