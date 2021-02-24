@@ -8,8 +8,9 @@
 display_help() {
     echo "Usage: [variable=value] $0" >&2
     echo
-    echo "   -d, --deploy               deploy container"
+    echo "   -e, --enter_container      enter container"
     echo "   -h, --help                 display help"
+    echo "   -k, --kill_container       kill container"
     echo "   -r, --run_container        launch container"
     echo
     # echo some stuff here for the -a or --add-options
@@ -43,7 +44,7 @@ make_variables() {
     PROJECT_ROOT=$(pwd)
     DOCKER_USER=docker_user
 
-    DOCKER_IMAGE=hsteinshiromoto/datascience
+    DOCKER_IMAGE=docker.pkg.github.com/hsteinshiromoto/docker.datascience/datascience
     DOCKER_TAG=${DOCKER_TAG:-latest}
     DOCKER_IMAGE_TAG=${DOCKER_IMAGE}:${DOCKER_TAG}
 
@@ -69,7 +70,7 @@ run_container() {
         get_container_id
 
     else
-	    echo "Container already running"
+        echo "Container already running"
 	fi
 
     sleep 5
@@ -85,27 +86,42 @@ run_container() {
     echo -e "Jupyter Address: ${BLUE}http://${JUPYTER_ADDRESS}/?token=${JUPYTER_TOKEN}${NC}"
 }
 
+enter_container() {
+    make_variables
+    get_container_id
+
+    docker exec -u ${DOCKER_USER} -it ${CONTAINER_ID} /bin/bash
+}
+
+kill_container() {
+    make_variables
+    get_container_id
+
+    docker kill ${CONTAINER_ID}
+}
+
 # Available options
 while :
 do
     case "$1" in
-        -e | --enter)
-            enter  # Call your function
+        -e | --enter_container)
+            enter_container
             exit 0
             ;;
 
         -h | --help)
-            display_help  # Call your function
+            display_help
             exit 0
             ;;
 
-        -r | --run) 
-            run_container  # Call your function
-            break
+        
+        -k | --kill_container)
+            kill_container
+            exit 0
             ;;
 
-        -s | --ssh)
-            run_ssh_container  # Call your function
+        -r | --run_container) 
+            run_container
             break
             ;;
 
