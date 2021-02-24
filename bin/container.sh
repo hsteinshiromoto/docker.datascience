@@ -41,6 +41,7 @@ make_variables() {
     set +a
 
     PROJECT_ROOT=$(pwd)
+    DOCKER_USER=docker_user
 
     DOCKER_IMAGE=hsteinshiromoto/datascience
     DOCKER_TAG=${DOCKER_TAG:-latest}
@@ -77,7 +78,7 @@ run_container() {
 
     echo -e "Port mapping: ${JUPYTER_PORT}"
 
-    JUPYTER_TOKEN=$(docker exec -i ${CONTAINER_ID} sh -c "jupyter lab list" | tac | grep -o "token=[a-z0-9]*" | sed -n 1p | cut -d "=" -f 2)
+    JUPYTER_TOKEN=$(docker exec -u ${DOCKER_USER} -i ${CONTAINER_ID} sh -c "jupyter lab list" | tac | grep -o "token=[a-z0-9]*" | sed -n 1p | cut -d "=" -f 2)
     echo -e "Jupyter token: ${GREEN}${JUPYTER_TOKEN}${NC}"
 
     JUPYTER_ADDRESS=$(docker ps | grep ${DOCKER_IMAGE_TAG} | grep -o "0.0.0.0:[0-9]*")
