@@ -1,8 +1,14 @@
 # Misc.
+biber
+build-essential
+curl
 git
 gosu
-wget
+gnupg2
 graphviz
 make
+pandoc
+sudo
 vim
-curl
+wget
+xzdec
