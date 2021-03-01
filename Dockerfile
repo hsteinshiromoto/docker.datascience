@@ -10,6 +10,10 @@ ARG BUILD_DATE
 # Silence debconf
 ARG DEBIAN_FRONTEND=noninteractive
 
+# Add vscode user to the container
+ARG USERNAME=vscode
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
 # ---
 # Enviroment variables
 # ---
@@ -19,7 +23,6 @@ ENV TZ Australia/Sydney
 ENV JUPYTER_ENABLE_LAB=yes
 
 # Set container time zone
-USER root
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 LABEL org.label-schema.build-date=$BUILD_DATE \
@@ -34,6 +37,16 @@ RUN apt-get update && \
 	DEBIAN_PACKAGES=$(egrep -v "^\s*(#|$)" /usr/local/debian-requirements.txt) && \
     apt-get install -y $DEBIAN_PACKAGES && \
     apt-get clean
+
+# ---
+# Setup vscode as nonroot user
+# ---
+RUN groupadd --gid $USER_GID $USERNAME \
+    && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
+    #
+    # [Optional] Add sudo support. Omit if you don't need to install software after connecting.
+    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
+    && chmod 0440 /etc/sudoers.d/$USERNAME
 
 # ---
 # Copy Container Setup Scripts
