@@ -14,6 +14,7 @@ dask[complete]
 jupyterlab
 numpy
 pandas
+pycaret[full]
 pymc3
 scikit-learn
 seaborn
