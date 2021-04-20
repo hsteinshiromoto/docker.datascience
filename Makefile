@@ -16,7 +16,7 @@ endif
 # ---
 
 ifndef DOCKER_IMAGE_NAME
-DOCKER_IMAGE_NAME=docker.pkg.github.com/hsteinshiromoto/docker.datascience/datascience
+DOCKER_IMAGE_NAME=docker.pkg.github.com/hsteinshiromoto/$(shell basename $(CURDIR))/datascience
 endif
 
 BUILD_DATE = $(shell date +%Y%m%d-%H:%M:%S)
@@ -39,13 +39,6 @@ push:
 	@echo "Pushing docker image ${DOCKER_IMAGE_TAG} to docker.pkg.github.com/hsteinshiromoto"
 	docker push ${DOCKER_IMAGE_TAG}
 	@echo "Done"
-
-
-#################################################################################
-# PROJECT RULES                                                                 #
-#################################################################################
-
-
 
 #################################################################################
 # Self Documenting Commands                                                     #
