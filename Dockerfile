@@ -66,10 +66,12 @@ RUN bash /usr/local/bin/setup_python.sh test_environment && \
 	bash /usr/local/bin/setup_python.sh requirements
 
 # Create the "home" folder
-RUN mkdir -p /home/docker_user
-WORKDIR /home/docker_user
+RUN mkdir -p /home/$USERNAME
+WORKDIR /home/$USERNAME
 
-# N.B.: Keep the order entrypoint than cmd
+# N.B.: Keep the order 1. entrypoint, 2. cmd
+USER $USERNAME
+
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 EXPOSE 8888
