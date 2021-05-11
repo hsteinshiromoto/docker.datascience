@@ -17,6 +17,8 @@ pandas
 pycaret[full]
 pymc3
 scikit-learn
+scikit-optimize
+scikit-plot
 seaborn
 statsmodels
 theano
