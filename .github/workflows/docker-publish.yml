@@ -86,4 +86,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: hsteinshiromoto/docker.datascience:latest
+          tags: hsteinshiromoto/docker.datascience:$VERSION
