@@ -62,15 +62,15 @@ RUN chmod +x /usr/local/bin/setup_python.sh && \
 	chmod +x /usr/local/bin/test_environment.py && \
 	chmod +x /usr/local/bin/setup.py
 
-RUN bash /usr/local/bin/setup_python.sh test_environment && \
-	bash /usr/local/bin/setup_python.sh requirements
-
 # Create the "home" folder
 RUN mkdir -p /home/$USERNAME
 WORKDIR /home/$USERNAME
 
 # N.B.: Keep the order 1. entrypoint, 2. cmd
 USER $USERNAME
+
+RUN bash /usr/local/bin/setup_python.sh test_environment && \
+	bash /usr/local/bin/setup_python.sh requirements
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
