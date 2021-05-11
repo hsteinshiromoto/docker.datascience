@@ -10,6 +10,7 @@ Sphinx
 # Data and Science Modules
 arviz
 bokeh
+category_encoders
 dask[complete]
 jupyterlab
 numpy
