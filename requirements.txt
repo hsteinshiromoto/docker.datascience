@@ -21,6 +21,7 @@ scikit-learn
 scikit-optimize
 scikit-plot
 seaborn
+shap
 statsmodels
 theano
 xgboost
