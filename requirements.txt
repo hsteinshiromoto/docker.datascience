@@ -24,5 +24,6 @@ seaborn
 shap
 statsmodels
 theano
+typeguard
 xgboost
 # pandas-profiling[notebook] N.B. This raises bugs with one of its dependencies: numba
