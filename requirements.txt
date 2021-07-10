@@ -6,19 +6,22 @@ flake8
 icecream
 python-dotenv>=0.5.1
 Sphinx
+typeguard
 
 # Data and Science Modules
 arviz
 bokeh
+catboost
 category_encoders
 dask[complete]
+hyperopt
 jupyterlab
+lightgbm
 numpy
 pandas
 pycaret[full]
 pymc3
 scikit-learn
-scikit-optimize
 scikit-plot
 seaborn
 shap
