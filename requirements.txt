@@ -11,10 +11,12 @@ typeguard
 # Data and Science Modules
 arviz
 bokeh
+catboost
 category_encoders
 dask[complete]
 hyperopt
 jupyterlab
+lightgbm
 numpy
 pandas
 pycaret[full]
