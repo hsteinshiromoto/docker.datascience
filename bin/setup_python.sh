@@ -11,6 +11,8 @@ if [[ $1 = "requirements" ]]; then
 	echo ">>> Installing Required Modules .."
 	cd /usr/local/bin/
 	pip3 install -U pip setuptools wheel
-	pip3 install -r /usr/local/requirements.txt
+	
+	cd /usr/local/
+	poetry install
 	echo ">>> Done!"
 fi
