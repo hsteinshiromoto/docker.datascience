@@ -14,16 +14,21 @@ endif
 # ---
 # Global Variables
 # ---
+PROJECT_PATH := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
+PROJECT_NAME = $(shell basename ${PROJECT_PATH})
 
-ifndef DOCKER_IMAGE_NAME
-DOCKER_IMAGE_NAME=docker.pkg.github.com/hsteinshiromoto/$(shell basename $(CURDIR))/datascience
-endif
+DOCKER_IMAGE_NAME = hsteinshiromoto/${PROJECT_NAME}
 
 BUILD_DATE = $(shell date +%Y%m%d-%H:%M:%S)
 
 # ---
 # Commands
 # ---
+## Test
+test:
+	$(eval DOCKER_IMAGE_TAG=${DOCKER_IMAGE_NAME}:${DOCKER_TAG})
+
+	@echo "DOCKER_IMAGE_TAG=${DOCKER_IMAGE_TAG}"
 
 ## Build container locally
 build:
@@ -33,10 +38,11 @@ build:
 	docker build --build-arg BUILD_DATE=${BUILD_DATE} -t ${DOCKER_IMAGE_TAG} .
 	@echo "Done"
 
+## Build container to docker hub
 push:
 	$(eval DOCKER_IMAGE_TAG=${DOCKER_IMAGE_NAME}:${DOCKER_TAG})
 
-	@echo "Pushing docker image ${DOCKER_IMAGE_TAG} to docker.pkg.github.com/hsteinshiromoto"
+	@echo "Pushing docker image ${DOCKER_IMAGE_TAG} to docker hub"
 	docker push ${DOCKER_IMAGE_TAG}
 	@echo "Done"
 
