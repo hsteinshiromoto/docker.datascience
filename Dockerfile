@@ -65,6 +65,9 @@ RUN chmod +x /usr/local/bin/setup_python.sh && \
 	chmod +x /usr/local/bin/test_environment.py && \
 	chmod +x /usr/local/bin/setup.py
 
+RUN bash /usr/local/bin/setup_python.sh test_environment && \
+	bash /usr/local/bin/setup_python.sh requirements
+
 # Create the "home" folder
 RUN mkdir -p /home/$USERNAME
 WORKDIR /home/$USERNAME
@@ -76,8 +79,9 @@ USER $USERNAME
 RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
 ENV PATH="${PATH}:$HOME/.poetry/bin"
 
-RUN bash /usr/local/bin/setup_python.sh test_environment && \
-	bash /usr/local/bin/setup_python.sh requirements
+RUN poetry config virtualenvs.create false \
+    && cd /usr/local \
+    && poetry install --no-interaction --no-ansi
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
