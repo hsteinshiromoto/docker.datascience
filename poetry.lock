@@ -675,6 +675,69 @@ distributed = ["distributed (==2021.07.2)"]
 test = ["pytest", "pytest-rerunfailures", "pytest-xdist"]
 
 [[package]]
+name = "dask-glm"
+version = "0.2.0"
+description = "Generalized Linear Models with Dask"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+cloudpickle = ">=0.2.2"
+dask = {version = "*", extras = ["array"]}
+multipledispatch = ">=0.4.9"
+scikit-learn = ">=0.18"
+scipy = ">=0.18.1"
+
+[package.extras]
+docs = ["jupyter", "nbsphinx", "notebook", "numpydoc", "sphinx", "sphinx-rtd-theme"]
+
+[[package]]
+name = "dask-ml"
+version = "1.9.0"
+description = "A library for distributed and parallel machine learning"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+dask = {version = ">=2.4.0", extras = ["array", "dataframe"]}
+dask-glm = ">=0.2.0"
+dask-xgboost = {version = "*", optional = true, markers = "extra == \"complete\""}
+distributed = ">=2.4.0"
+multipledispatch = ">=0.4.9"
+numba = ">=0.51.0"
+numpy = ">=1.17.3"
+packaging = "*"
+pandas = ">=0.24.2"
+scikit-learn = ">=0.23"
+scipy = "*"
+xgboost = {version = "*", optional = true, markers = "extra == \"complete\""}
+
+[package.extras]
+complete = ["dask-xgboost", "xgboost"]
+dev = ["sphinx", "numpydoc", "sphinx-rtd-theme", "nbsphinx", "sphinx-gallery", "black", "coverage", "flake8", "isort", "pytest", "pytest-cov", "pytest-mock"]
+docs = ["sphinx", "numpydoc", "sphinx-rtd-theme", "nbsphinx", "sphinx-gallery"]
+test = ["black", "coverage", "flake8", "isort", "pytest", "pytest-cov", "pytest-mock"]
+xgboost = ["dask-xgboost", "xgboost"]
+
+[[package]]
+name = "dask-xgboost"
+version = "0.1.10"
+description = "Interactions between Dask and XGBoost"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+dask = "*"
+distributed = ">=1.15.2"
+xgboost = "*"
+
+[package.extras]
+sparse = ["sparse", "scipy"]
+
+[[package]]
 name = "databricks-cli"
 version = "0.14.3"
 description = "A command line interface for Databricks"
@@ -1838,6 +1901,17 @@ python-versions = ">=3.6"
 
 [package.extras]
 docs = ["recommonmark", "nbsphinx", "jupyter", "sphinx"]
+
+[[package]]
+name = "multipledispatch"
+version = "0.6.0"
+description = "Multiple dispatch"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+six = "*"
 
 [[package]]
 name = "multiprocess"
@@ -3744,7 +3818,7 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = "3.9.*"
-content-hash = "9741d786fffd087c527463b437f2ee16c59552b41d33f547c0c2da6bd8d26387"
+content-hash = "7e723404c43ea75080f6c470cea0fc835b7e8e93ac57552338be96c47b422676"
 
 [metadata.files]
 aiohttp = [
@@ -4187,6 +4261,18 @@ dash-table = [
 dask = [
     {file = "dask-2021.7.2-py3-none-any.whl", hash = "sha256:63a6e56cd64ae6f9cee2cdddd756a31222a563ea7a4cfee472ca5ce25ec02179"},
     {file = "dask-2021.7.2.tar.gz", hash = "sha256:41727347fb4c098c5cafe3e1e24634b086461603cc3b6f6f71f335abf15833c8"},
+]
+dask-glm = [
+    {file = "dask-glm-0.2.0.tar.gz", hash = "sha256:58b86cebf04fe5b9e58092e1c467e32e60d01e11b71fdc628baaa9fc6d1adee5"},
+    {file = "dask_glm-0.2.0-py2.py3-none-any.whl", hash = "sha256:a116c36a830cc20660c0815c4c8d67239814931952e8695d784604cb4839ea51"},
+]
+dask-ml = [
+    {file = "dask-ml-1.9.0.tar.gz", hash = "sha256:2f376a7114133b484a6d393f62298473116fc49c79ec7d50d5b031d752f54307"},
+    {file = "dask_ml-1.9.0-py3-none-any.whl", hash = "sha256:a96eed5d5d6ad52a5a6418b22fa30f97a58e2c686de335012b7b5d1ff9a3f686"},
+]
+dask-xgboost = [
+    {file = "dask-xgboost-0.1.10.tar.gz", hash = "sha256:454c47ccf64315d35beeca32c7cedf20d8a8d42471d5e6ce0c51f4af0a6e021e"},
+    {file = "dask_xgboost-0.1.10-py2.py3-none-any.whl", hash = "sha256:9d7ef5e1708f76a5d4e7279b91a4b76e41d541171cdb25addc6fbdaad79fdf82"},
 ]
 databricks-cli = [
     {file = "databricks-cli-0.14.3.tar.gz", hash = "sha256:bdf89a3917a3f8f8b99163e38d40e66dc478c7408954747f145cd09816b05e2c"},
@@ -4937,6 +5023,11 @@ multidict = [
 multimethod = [
     {file = "multimethod-1.4-py2.py3-none-any.whl", hash = "sha256:2746500793c64cbd84a6ccda0043f4b58af3fcf8d6cd44b2232d5b9455b31d73"},
     {file = "multimethod-1.4.tar.gz", hash = "sha256:8b315d6c965a797899a699913cdc391ded51dca22db5d11bda3399ce24ffed76"},
+]
+multipledispatch = [
+    {file = "multipledispatch-0.6.0-py2-none-any.whl", hash = "sha256:407e6d8c5fa27075968ba07c4db3ef5f02bea4e871e959570eeb69ee39a6565b"},
+    {file = "multipledispatch-0.6.0-py3-none-any.whl", hash = "sha256:a55c512128fb3f7c2efd2533f2550accb93c35f1045242ef74645fc92a2c3cba"},
+    {file = "multipledispatch-0.6.0.tar.gz", hash = "sha256:a7ab1451fd0bf9b92cab3edbd7b205622fb767aeefb4fb536c2e3de9e0a38bea"},
 ]
 multiprocess = [
     {file = "multiprocess-0.70.12.2-cp27-cp27m-macosx_10_12_x86_64.whl", hash = "sha256:35d41e410ca2a32977a483ae1f40f86b193b45cecf85567c2fae402fb8bf172e"},
