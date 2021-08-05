@@ -32,9 +32,10 @@ xgboost = "^1.4.2"
 
 [tool.poetry.dev-dependencies]
 icecream = "^2.1.1"
-jupyterlab = "^3.0.16"
 ipykernel = "^6.0.1"
+jupyterlab = "^3.0.16"
 pycaret = {extras = ["full"], version = "^2.3.2"}
+watermark = "^2.2.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
