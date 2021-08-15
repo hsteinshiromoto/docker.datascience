@@ -1,4 +1,4 @@
-![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/hsteinshiromoto/docker.datascience/Docker/master?style=for-the-badge) ![Docker Image Version (latest semver)](https://img.shields.io/docker/v/hsteinshiromoto/docker.datascience?style=for-the-badge) ![Python Version](https://img.shields.io/badge/python-3-blue?style=for-the-badge)
+![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/hsteinshiromoto/docker.datascience/Docker/master?style=for-the-badge) ![Python Version](https://img.shields.io/badge/python-3-blue?style=for-the-badge) ![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/hsteinshiromoto/docker.datascience)
 
 # 1. Data Science Docker Container
 
