@@ -38,6 +38,7 @@ jupyter = "^1.0.0"
 jupyterlab = "^3.0.16"
 pycaret = {extras = ["full"], version = "^2.3.2"}
 watermark = "^2.2.0"
+pytest = "^6.2.5"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
