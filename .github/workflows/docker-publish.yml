@@ -18,11 +18,19 @@ env:
   IMAGE_NAME: docker.datascience
 
 jobs:
-  # See also https://docs.docker.com/docker-hub/builds/
-  build_and_push:
-
+  test_build:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push'
+    if: ${{ github.ref != 'refs/heads/master' }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build image
+        run: make build
+
+  build_and_push:
+    runs-on: ubuntu-latest
+    if: ${{ github.ref == 'refs/heads/master' }}
 
     steps:
       - uses: actions/checkout@v2
