@@ -6,6 +6,7 @@ git
 gosu
 gnupg2
 graphviz
+latexmk
 make
 pandoc
 sudo
