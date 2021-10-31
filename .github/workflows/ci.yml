@@ -39,7 +39,7 @@ jobs:
       - name: Check if image exists
         id: image_exists
         run: |
-          response=$(docker manifest inspect ${{ github.actor }}/$IMAGE_NAME:${{ steps.docker_version.outputs.version }} > /dev/null ; echo $?)
+          response=$(docker manifest inspect ${{ secrets.DOCKERHUB_USERNAME }}/$IMAGE_NAME:${{ steps.docker_version.outputs.version }} > /dev/null ; echo $?)
           echo ::set-output name=image_exists::$(echo ${response})
 
       - name: Build docker image if it is not on registry
@@ -56,7 +56,7 @@ jobs:
       - name: Push image to Github Registry
         if: ${{ steps.image_exists.outputs.image_exists == 1 }}
         run: |
-          IMAGE_ID=${{ github.actor }}/$IMAGE_NAME
+          IMAGE_ID=${{ secrets.DOCKERHUB_USERNAME }}/$IMAGE_NAME
 
           # Change all uppercase to lowercase
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
@@ -68,7 +68,7 @@ jobs:
           echo VERSION=$VERSION
           echo IMAGE_NAME=$IMAGE_NAME
 
-          docker tag ${{ github.actor }}/$IMAGE_NAME:$VERSION $IMAGE_ID:$VERSION
+          docker tag ${{ secrets.DOCKERHUB_USERNAME }}/$IMAGE_NAME:$VERSION $IMAGE_ID:$VERSION
           docker push $IMAGE_ID:$VERSION
 
           docker tag $IMAGE_ID:$VERSION $IMAGE_ID:latest
