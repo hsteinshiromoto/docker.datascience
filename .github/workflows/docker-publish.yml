@@ -1,10 +1,13 @@
-name: Docker
+name: CI
 
 on:
   push:
     # Publish `master` as Docker `latest` image.
-    branches:       # See https://stackoverflow.com/questions/57699839/github-actions-how-to-target-all-branches-except-master for choices
-      - '**'        # matches every branch
+    branches:
+      - 'feature/*'
+      - 'bugfix/*'
+      - 'hotfix/*'
+      - 'release/*'
 
     # Publish `v1.2.3` tags as releases.
     tags:
@@ -18,63 +21,55 @@ env:
   IMAGE_NAME: docker.datascience
 
 jobs:
-  test_build:
+  build_docker_image:
+    name: Build docker image
     runs-on: ubuntu-latest
-    if: ${{ github.ref != 'refs/heads/master' }}
+    outputs:
+      docker_version: ${{ steps.docker_version.outputs.version }}
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
 
-      - name: Build image
-        run: make build
+      - name: Get docker version
+        id: docker_version
+        run: | 
+          echo "::set-output name=version::$(git ls-files -s Dockerfile | awk '{print $2}' | cut -c1-16)"
 
-  build_and_push:
-    runs-on: ubuntu-latest
-    if: ${{ github.ref == 'refs/heads/master' }}
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Build image
-        run: make build
-
-      - name: Log into registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-
-      - name: Push image to Github Registry
+      - name: Check if image exists
+        id: image_exists
         run: |
-          # Strip git ref prefix from version
-          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+          response=$(docker manifest inspect ${{ github.actor }}/$IMAGE_NAME:${{ steps.docker_version.outputs.version }} > /dev/null ; echo $?)
+          echo ::set-output name=image_exists::$(echo ${response})
 
-          if [ "$VERSION" == "main" ]; then
-            IMAGE_ID=ghcr.io/${{ github.repository }}/$IMAGE_NAME
-
-            # Change all uppercase to lowercase
-            IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-
-            # Strip "v" prefix from tag name
-            [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
-
-            # Use Docker `latest` tag convention
-            [ "$VERSION" == "master" ] && VERSION=latest
-
-            echo IMAGE_ID=$IMAGE_ID
-            echo VERSION=$VERSION
-
-            docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
-            docker push $IMAGE_ID:$VERSION
-          fi
-            echo "Skipping push step, because this branch is ${VERSION}."
+      - name: Build docker image if it is not on registry
+        if: ${{ steps.image_exists.outputs.image_exists == 1 }}
+        run: make image
 
       - name: Login to Dockerhub
+        if: ${{ steps.image_exists.outputs.image_exists == 1 }}
         uses: docker/login-action@v1
         with: 
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          push: true
-          tags: hsteinshiromoto/docker.datascience:latest
+      - name: Push image to Github Registry
+        if: ${{ steps.image_exists.outputs.image_exists == 1 }}
+        run: |
+          IMAGE_ID=${{ github.actor }}/$IMAGE_NAME
+
+          # Change all uppercase to lowercase
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+
+          # Strip git ref prefix from version
+          VERSION=$(git ls-files -s Dockerfile | awk '{print $2}' | cut -c1-16)
+
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+          echo IMAGE_NAME=$IMAGE_NAME
+
+          docker tag ${{ github.actor }}/$IMAGE_NAME:$VERSION $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION
+
+          docker tag $IMAGE_ID:$VERSION $IMAGE_ID:latest
+          docker push $IMAGE_ID:latest
