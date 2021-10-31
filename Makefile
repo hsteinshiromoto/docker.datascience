@@ -19,16 +19,6 @@ BASE_IMAGE_TAG=$(shell git ls-files -s Dockerfile.base | awk '{print $$2}' | cut
 APP_IMAGE_TAG=$(shell git ls-files -s Dockerfile | awk '{print $$2}' | cut -c1-16)
 
 # ---
-# Global Variables
-# ---
-PROJECT_PATH := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
-PROJECT_NAME = $(shell basename ${PROJECT_PATH})
-
-DOCKER_IMAGE_NAME = hsteinshiromoto/${PROJECT_NAME}
-
-BUILD_DATE = $(shell date +%Y%m%d-%H:%M:%S)
-
-# ---
 # Commands
 # ---
 ## Test
