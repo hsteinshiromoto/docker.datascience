@@ -48,7 +48,6 @@ base_image:
 	@echo "Done"
 
 app_image:
-	app_image:
 	$(eval DOCKER_IMAGE_TAG=${DOCKER_IMAGE_NAME}:${APP_IMAGE_TAG})
 	$(eval DOCKER_PARENT_IMAGE=${DOCKER_IMAGE_NAME}.base:${BASE_IMAGE_TAG})
 
