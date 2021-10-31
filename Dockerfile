@@ -10,6 +10,7 @@ ARG BUILD_DATE
 # Silence debconf
 ARG DEBIAN_FRONTEND=noninteractive
 
+ARG PROJECT_NAME
 
 # ---
 # Enviroment variables
@@ -19,7 +20,8 @@ ENV LANG=C.UTF-8 \
 ENV TZ Australia/Sydney
 ENV JUPYTER_ENABLE_LAB=yes
 ENV SHELL=/bin/bash
-ENV HOME=/home/$USERNAME
+ENV PROJECT_NAME=$PROJECT_NAME
+ENV HOME=/home/$PROJECT_NAME
 
 # Set container time zone
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
@@ -36,8 +38,8 @@ COPY pyproject.toml /usr/local/pyproject.toml
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Create the "home" folder
-RUN mkdir -p /home/$USERNAME
-WORKDIR /home/$USERNAME
+RUN mkdir -p $HOME
+WORKDIR $HOME
 
 # N.B.: Keep the order 1. entrypoint, 2. cmd
 USER $USERNAME
