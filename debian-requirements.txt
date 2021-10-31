@@ -9,6 +9,10 @@ graphviz
 make
 pandoc
 sudo
+texlive
+texlive-bibtex-extra
+texlive-fonts-extra
+texlive-xetex
 vim
 wget
 xzdec
