@@ -35,8 +35,6 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
 COPY poetry.lock /usr/local/poetry.lock
 COPY pyproject.toml /usr/local/pyproject.toml
 
-RUN chmod +x /usr/local/bin/entrypoint.sh
-
 # Create the "home" folder
 RUN mkdir -p $HOME
 WORKDIR $HOME
