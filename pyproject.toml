@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "docker.datascience"
-version = "4.0.1"
+version = "5.0.0"
 description = ""
 authors = ["Humberto STEIN SHIROMOTO <h.stein.shiromoto@gmail.com>"]
 license = "MIT"
