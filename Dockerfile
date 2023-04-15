@@ -60,22 +60,25 @@ COPY pyproject.toml /usr/local/pyproject.toml
 RUN mkdir -p $HOME
 WORKDIR $HOME
 
-# N.B.: Keep the order 1. entrypoint, 2. cmd
-USER $USERNAME
-
 # Get poetry
 RUN curl -sSL https://install.python-poetry.org | python3 -
 ENV PATH="${PATH}:$HOME/.poetry/bin"
 ENV PATH="${PATH}:$HOME/.local/bin"
 
-# RUN poetry config virtualenvs.create false \ 
-#     && cd /usr/local \
-#     && poetry install --no-interaction --no-ansi
+RUN poetry config virtualenvs.create false \ 
+    && cd /usr/local \
+    && poetry install --no-interaction --no-ansi
 
 ENV PATH="${PATH}:$HOME/.local/bin"
+
+# Add plugin to update the package versions [1]
+RUN poetry self add poetry-plugin-up
 
 # Need for Pytest
 ENV PATH="${PATH}:${PYENV_ROOT}/versions/$PYTHON_VERSION/bin"
 
 EXPOSE 8888
 CMD ["jupyter", "lab", "--port=8888", "--no-browser", "--ip=0.0.0.0", "--allow-root"]
+
+# References
+# [1] https://github.com/python-poetry/poetry/issues/461#issuecomment-1348696119
