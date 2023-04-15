@@ -11,6 +11,8 @@ GIT_REMOTE=$(shell basename $(shell git remote get-url origin))
 PROJECT_NAME=$(shell echo $(GIT_REMOTE:.git=))
 CURRENT_VERSION=$(shell git tag -l --sort=-creatordate | head -n 1 | cut -d "v" -f2-)
 
+DOCKER_BASE_IMAGE=debian:latest
+PYTHON_VERSION="3.11.1"
 DOCKER_IMAGE_NAME=hsteinshiromoto/${PROJECT_NAME}
 
 BUILD_DATE = $(shell date +%Y%m%d-%H:%M:%S)
@@ -33,6 +35,7 @@ base_image:
 
 	@echo "Building docker image ${DOCKER_IMAGE_TAG}"
 	docker build --build-arg BUILD_DATE=${BUILD_DATE} \
+				--build-arg DOCKER_PARENT_IMAGE=${DOCKER_BASE_IMAGE} \
 				-f Dockerfile.base \
 				-t ${DOCKER_IMAGE_TAG} .
 	@echo "Done"
@@ -45,6 +48,7 @@ app_image:
 	@echo "Building docker image ${DOCKER_IMAGE_TAG}"
 	docker build --build-arg BUILD_DATE=${BUILD_DATE} \
 				--build-arg DOCKER_PARENT_IMAGE=${DOCKER_PARENT_IMAGE} \
+				--build-arg PYTHON_VERSION=${PYTHON_VERSION} \
 				--build-arg PROJECT_NAME=${PROJECT_NAME} \
 				-t ${DOCKER_IMAGE_TAG} .
 	@echo "Done"
