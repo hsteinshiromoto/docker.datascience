@@ -31,6 +31,11 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 LABEL org.label-schema.build-date=$BUILD_DATE \
         maintainer="Humberto STEIN SHIROMOTO <h.stein.shiromoto@gmail.com>"
 
+# Create the "home" folder
+RUN mkdir -p $HOME
+WORKDIR $HOME
+
+COPY . $HOME/
 
 # Install pyenv dependencies
 RUN apt-get update && \
@@ -50,23 +55,10 @@ RUN pyenv install $PYTHON_VERSION && pyenv global $PYTHON_VERSION
 
 RUN apt-get update && apt-get install vim gnupg2 make curl wget tree -y && apt-get clean
 
-# ---
-# Copy Container Setup Scripts
-# ---
-COPY poetry.lock /usr/local/poetry.lock
-COPY pyproject.toml /usr/local/pyproject.toml
-
-# Create the "home" folder
-RUN mkdir -p $HOME
-WORKDIR $HOME
-
 # Get poetry
-RUN curl -sSL https://install.python-poetry.org | python3 -
-ENV PATH="${PATH}:$HOME/.poetry/bin"
-ENV PATH="${PATH}:$HOME/.local/bin"
+RUN pip install poetry
 
 RUN poetry config virtualenvs.create false \ 
-    && cd /usr/local \
     && poetry install --no-interaction --no-ansi
 
 ENV PATH="${PATH}:$HOME/.local/bin"
