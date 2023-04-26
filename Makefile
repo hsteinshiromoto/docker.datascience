@@ -65,6 +65,10 @@ push:
 	docker push ${DOCKER_IMAGE_TAG}
 	@echo "Done"
 
+## Update Poetry packages
+poetry_up:
+	poetry up --latest
+
 #################################################################################
 # Self Documenting Commands                                                     #
 #################################################################################
