@@ -1,3 +1,3 @@
 FROM hsteinshiromoto/docker.datascience:latest
 
-RUN pip install pymc3 theano arviz
+RUN poetry add pymc
