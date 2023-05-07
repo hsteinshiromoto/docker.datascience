@@ -80,14 +80,14 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-       variant: [keras, pymc3]
+       variant: [keras, pymc3, sklearn]
     
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
       - name: Build docker image if it is not on registry
-        run: make ${{ matrix.variant }}
+        run: make image_${{ matrix.variant }}
         
       - name: Login to Dockerhub
         uses: docker/login-action@v1
