@@ -54,9 +54,10 @@ app_image:
 	@echo "Done"
 
 image_%:
-	$(eval DOCKER_IMAGE_TAG=${DOCKER_IMAGE_NAME}:$@)
+	$(eval DOCKER_TAG=$(subst image_,,$@))
+	$(eval DOCKER_IMAGE_TAG=${DOCKER_IMAGE_NAME}:${DOCKER_TAG})
 	@echo "Building docker image ${DOCKER_IMAGE_TAG}"
-	docker build -t ${DOCKER_IMAGE_TAG} -f Dockerfile.keras .
+	docker build -t ${DOCKER_IMAGE_TAG} -f Dockerfile.${DOCKER_TAG} .
 	@echo "Done"
 
 all_images: app_image keras
