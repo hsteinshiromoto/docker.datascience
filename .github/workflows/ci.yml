@@ -75,6 +75,7 @@ jobs:
           docker push $IMAGE_ID:latest
 
   build_variant_images:
+    needs: build_data_science_image
     name: Build Dependent Images
     runs-on: ubuntu-latest
     strategy:
