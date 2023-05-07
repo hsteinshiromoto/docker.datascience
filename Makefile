@@ -53,6 +53,20 @@ app_image:
 				-t ${DOCKER_IMAGE_TAG} .
 	@echo "Done"
 
+keras:
+	$(eval DOCKER_IMAGE_TAG=${DOCKER_IMAGE_NAME}:$(MAKECMDGOALS))
+	@echo "Building docker image ${DOCKER_IMAGE_TAG}"
+	docker build -t ${DOCKER_IMAGE_TAG} -f Dockerfile.keras .
+	@echo "Done"
+
+pymc3:
+	$(eval DOCKER_IMAGE_TAG=${DOCKER_IMAGE_NAME}:$(MAKECMDGOALS))
+	@echo "Building docker image ${DOCKER_IMAGE_TAG}"
+	docker build -t ${DOCKER_IMAGE_TAG} -f Dockerfile.pymc3 .
+	@echo "Done"
+
+
+all_images: app_image keras
 
 ## Build Docker image
 image: base_image app_image
