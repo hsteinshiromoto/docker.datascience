@@ -65,6 +65,12 @@ pymc3:
 	docker build -t ${DOCKER_IMAGE_TAG} -f Dockerfile.pymc3 .
 	@echo "Done"
 
+sklearn:
+	$(eval DOCKER_IMAGE_TAG=${DOCKER_IMAGE_NAME}:$(MAKECMDGOALS))
+	@echo "Building docker image ${DOCKER_IMAGE_TAG}"
+	docker build -t ${DOCKER_IMAGE_TAG} -f Dockerfile.$(MAKECMDGOALS) .
+	@echo "Done"
+
 
 all_images: app_image keras
 

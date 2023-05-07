@@ -1,0 +1,3 @@
+FROM hsteinshiromoto/docker.datascience:latest
+
+RUN poetry add scikit-learn scikit-plot statsmodels xgboost seaborn
