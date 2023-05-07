@@ -80,7 +80,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-       variant: [keras, pymc3, sklearn]
+       variant: [keras, pymc, sklearn]
     
     steps:
       - name: Checkout
