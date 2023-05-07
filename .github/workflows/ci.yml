@@ -21,8 +21,8 @@ env:
   IMAGE_NAME: docker.datascience
 
 jobs:
-  build_docker_image:
-    name: Build docker image
+  build_data_science_image:
+    name: Build Data Science Image
     runs-on: ubuntu-latest
     outputs:
       docker_version: ${{ steps.docker_version.outputs.version }}
@@ -73,3 +73,18 @@ jobs:
 
           docker tag $IMAGE_ID:$VERSION $IMAGE_ID:latest
           docker push $IMAGE_ID:latest
+
+  build_variant_images:
+    name: Build Dependent Images
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+       variant: [keras, pymc3]
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Build docker image if it is not on registry
+        run: make ${{ matrix.variant }}
+        
