@@ -33,14 +33,14 @@ jobs:
 
       - name: Get docker version
         id: docker_version
-        run: | 
-          echo "::set-output name=version::$(git ls-files -s Dockerfile | awk '{print $2}' | cut -c1-16)"
+        run: |
+          echo "version=$(git ls-files -s Dockerfile | awk '{print $2}' | cut -c1-16)" >> $GITHUB_OUTPUT
 
       - name: Check if image exists
         id: image_exists
         run: |
           response=$(docker manifest inspect ${{ secrets.DOCKERHUB_USERNAME }}/$IMAGE_NAME:${{ steps.docker_version.outputs.version }} > /dev/null ; echo $?)
-          echo ::set-output name=image_exists::$(echo ${response})
+          echo "image_exists=$(echo ${response})" >> $GITHUB_OUTPUT
 
       - name: Build docker image if it is not on registry
         if: ${{ steps.image_exists.outputs.image_exists == 1 }}
@@ -76,7 +76,7 @@ jobs:
 
   build_variant_images:
     needs: build_data_science_image
-    name: Build Dependent Images
+    name: Build Variant Images
     runs-on: ubuntu-latest
     strategy:
       matrix:
