@@ -41,12 +41,15 @@ make_variables() {
     source .env
     set +a
 
-    PROJECT_ROOT=$(pwd)
-    DOCKER_USER=vscode
+    PROJECT_ROOT=$(git rev-parse --show-toplevel)
 
-    DOCKER_IMAGE=hsteinshiromoto/docker.datascience
+    GIT_REMOTE=$(basename $(git remote get-url origin))
+    PROJECT_NAME=$(echo ${GIT_REMOTE%.git})
+    DOCKER_USER=${PROJECT_NAME}
+
+    DOCKER_IMAGE_NAME=hsteinshiromoto/${PROJECT_NAME}
     DOCKER_TAG=${DOCKER_TAG:-latest}
-    DOCKER_IMAGE_TAG=${DOCKER_IMAGE}:${DOCKER_TAG}
+    DOCKER_IMAGE_TAG=${DOCKER_IMAGE_NAME}:${DOCKER_TAG}
 
     RED="\033[1;31m"
     BLUE='\033[1;34m'
