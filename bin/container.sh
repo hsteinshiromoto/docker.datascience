@@ -75,15 +75,10 @@ run_container() {
 
     sleep 5
 
-    JUPYTER_PORT=$(docker ps -f "ancestor=${DOCKER_IMAGE_TAG}" | grep -o "0.0.0.0:[0-9]*->8888" | cut -d ":" -f 2 | head -n 1)
+    echo $(docker exec -i ${CONTAINER_ID} /bin/bash -c "jupyter lab list")
 
-    echo -e "Port mapping: ${JUPYTER_PORT}"
-
-    JUPYTER_TOKEN=$(docker exec -i ${CONTAINER_ID} sh -c "jupyter lab list" | tac | grep -o "token=[a-z0-9]*" | sed -n 1p | cut -d "=" -f 2)
-    echo -e "Jupyter token: ${GREEN}${JUPYTER_TOKEN}${NC}"
-
-    JUPYTER_ADDRESS=$(docker ps | grep ${DOCKER_IMAGE_TAG} | grep -o "0.0.0.0:[0-9]*")
-    echo -e "Jupyter Address: ${BLUE}http://127.0.0.1:${JUPYTER_PORT}/?token=${JUPYTER_TOKEN}${NC}"
+    VSCODE_TOKEN=$(docker exec -t ${CONTAINER_ID} /bin/bash -c "cat ~/.config/code-server/config.yaml" | sed -n 's/password: \(.*\)/\1/p'  | cut -d ' ' -f 1)
+    echo -e "VSCode Token: ${VSCODE_TOKEN}"
 }
 
 enter_container() {
