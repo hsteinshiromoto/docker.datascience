@@ -36,6 +36,7 @@ RUN mkdir -p $HOME
 WORKDIR $HOME
 
 COPY . $HOME/
+RUN chmod +x $HOME/bin/start.sh
 
 # Install pyenv dependencies
 RUN apt-get update && \
@@ -69,8 +70,11 @@ RUN poetry self add poetry-plugin-up
 # Need for Pytest
 ENV PATH="${PATH}:${PYENV_ROOT}/versions/$PYTHON_VERSION/bin"
 
-EXPOSE 8888
-CMD ["jupyter", "lab", "--port=8888", "--no-browser", "--ip=0.0.0.0", "--allow-root"]
+# Install VSCode server
+RUN curl -fsSL https://code-server.dev/install.sh | sh
+
+EXPOSE 8888 8080
+CMD bash bin/start.sh
 
 # References
 # [1] https://github.com/python-poetry/poetry/issues/461#issuecomment-1348696119
