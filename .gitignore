@@ -8,6 +8,7 @@
 
 ## Files ##
 .bash_history
+.swp
 
 ### JupyterNotebooks ###
 # gitignore template for Jupyter Notebooks
