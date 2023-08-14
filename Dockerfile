@@ -35,8 +35,11 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
 RUN mkdir -p $HOME
 WORKDIR $HOME
 
-COPY . $HOME/
-RUN chmod +x $HOME/bin/start.sh
+COPY bin/start.sh usr/local/bin/start.sh
+COPY poetry.lock /usr/local/poetry.lock
+COPY pyproject.toml /usr/local/pyproject.toml
+
+RUN chmod +x usr/local/bin/start.sh
 
 # Install pyenv dependencies
 RUN apt-get update && \
@@ -59,7 +62,8 @@ RUN apt-get update && apt-get install vim gnupg2 make curl wget tree -y && apt-g
 # Get poetry
 RUN pip install poetry
 
-RUN poetry config virtualenvs.create false \ 
+RUN poetry config virtualenvs.create false \
+    && cd /usr/local \
     && poetry install --no-interaction --no-ansi
 
 ENV PATH="${PATH}:$HOME/.local/bin"
@@ -74,7 +78,7 @@ ENV PATH="${PATH}:${PYENV_ROOT}/versions/$PYTHON_VERSION/bin"
 RUN curl -fsSL https://code-server.dev/install.sh | sh
 
 EXPOSE 8888 8080
-CMD bash bin/start.sh
+CMD bash usr/local/bin/start.sh
 
 # References
 # [1] https://github.com/python-poetry/poetry/issues/461#issuecomment-1348696119
