@@ -1,3 +1,3 @@
 FROM hsteinshiromoto/docker.datascience:latest
 
-RUN pip install pycaret
+RUN pip install pycaret[full]
