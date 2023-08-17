@@ -59,7 +59,10 @@ image_%:
 	@echo "Building docker image ${DOCKER_IMAGE_TAG}"
 	@if [ "${DOCKER_TAG}" = "pycaret" ]; then \
 		$(eval DOCKER_PARENT_IMAGE=${DOCKER_IMAGE_NAME}.base:${BASE_IMAGE_TAG}) \
-		docker build --build-arg DOCKER_PARENT_IMAGE=${DOCKER_BASE_IMAGE} \
+		docker build --build-arg BUILD_DATE=${BUILD_DATE} \
+					 --build-arg DOCKER_PARENT_IMAGE=${DOCKER_BASE_IMAGE} \
+					 --build-arg PYTHON_VERSION=${PYTHON_VERSION} \
+					 --build-arg PROJECT_NAME=${PROJECT_NAME} \
 					 -t ${DOCKER_IMAGE_TAG} -f Dockerfile.${DOCKER_TAG} .; \
 	else \
 		docker build -t ${DOCKER_IMAGE_TAG} -f Dockerfile.${DOCKER_TAG} .; \
