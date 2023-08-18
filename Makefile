@@ -61,7 +61,7 @@ image_%:
 		$(eval DOCKER_PARENT_IMAGE=${DOCKER_IMAGE_NAME}.base:${BASE_IMAGE_TAG}) \
 		docker build --build-arg BUILD_DATE=${BUILD_DATE} \
 					 --build-arg DOCKER_PARENT_IMAGE=${DOCKER_BASE_IMAGE} \
-					 --build-arg PYTHON_VERSION=${PYTHON_VERSION} \
+					 --build-arg PYTHON_VERSION="3.10.1" \
 					 --build-arg PROJECT_NAME=${PROJECT_NAME} \
 					 -t ${DOCKER_IMAGE_TAG} -f Dockerfile.${DOCKER_TAG} .; \
 	else \
