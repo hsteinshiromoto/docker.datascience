@@ -87,7 +87,19 @@ jobs:
     
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+
+      - name: Detecting file changes
+        uses: dorny/paths-filter@v2
+        id: changed_files
+        with:
+          base: dev
+          filters: |
+            build_image:
+              - 'Dockerfile.${{ matrix.variant }}'
+              - 'Makefile'
+              - 'poetry.lock'
+              - 'pyproject.toml'
 
       - name: Build docker image if it is not on registry
         run: make image_${{ matrix.variant }}
