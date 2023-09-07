@@ -1,3 +1,5 @@
 FROM hsteinshiromoto/docker.datascience:latest
 
-RUN poetry add scikit-learn scikit-plot statsmodels xgboost seaborn shap
+RUN cd /usr/local && poetry add scikit-learn scikit-plot statsmodels xgboost seaborn
+
+RUN pip install shap

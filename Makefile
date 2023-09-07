@@ -25,7 +25,7 @@ APP_IMAGE_TAG=$(shell git ls-files -s Dockerfile | awk '{print $$2}' | cut -c1-1
 # ---
 ## Test
 test:
-	$(eval DOCKER_IMAGE_TAG=${DOCKER_IMAGE_NAME}:${DOCKER_TAG})
+	$(eval DOCKER_IMAGE_TAG=${DOCKER_IMAGE_NAME}.base:${BASE_IMAGE_TAG})
 
 	@echo "DOCKER_IMAGE_TAG=${DOCKER_IMAGE_TAG}"
 
@@ -57,7 +57,16 @@ image_%:
 	$(eval DOCKER_TAG=$(subst image_,,$@))
 	$(eval DOCKER_IMAGE_TAG=${DOCKER_IMAGE_NAME}:${DOCKER_TAG})
 	@echo "Building docker image ${DOCKER_IMAGE_TAG}"
-	docker build -t ${DOCKER_IMAGE_TAG} -f Dockerfile.${DOCKER_TAG} .
+	@if [ "${DOCKER_TAG}" = "pycaret" ]; then \
+		$(eval DOCKER_PARENT_IMAGE=${DOCKER_IMAGE_NAME}.base:${BASE_IMAGE_TAG}) \
+		docker build --build-arg BUILD_DATE=${BUILD_DATE} \
+					 --build-arg DOCKER_PARENT_IMAGE=${DOCKER_BASE_IMAGE} \
+					 --build-arg PYTHON_VERSION="3.10.1" \
+					 --build-arg PROJECT_NAME=${PROJECT_NAME} \
+					 -t ${DOCKER_IMAGE_TAG} -f Dockerfile.${DOCKER_TAG} .; \
+	else \
+		docker build -t ${DOCKER_IMAGE_TAG} -f Dockerfile.${DOCKER_TAG} .; \
+	fi
 	@echo "Done"
 
 all_images: app_image keras
