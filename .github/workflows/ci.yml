@@ -103,21 +103,20 @@ jobs:
               - 'Makefile'
               - 'poetry.lock'
               - 'pyproject.toml'
-              - '.github/workflows/ci.yml'
 
       - name: Build docker image if file changes
         if: ${{ steps.changed_files.outputs.build_image == 'true' }} || ${{ steps.variants.outputs.changed_files == 'true' }}
         run: make image_${{ matrix.variant }}
         
       - name: Login to Dockerhub
-        if: steps.variants.outputs.changed_files == 'true'
+        if: ${{ steps.changed_files.outputs.build_image == 'true' }} || ${{ steps.variants.outputs.changed_files == 'true' }}
         uses: docker/login-action@v1
         with: 
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Push image to Docker hub Registry
-        if: steps.variants.outputs.changed_files == 'true'
+        if: ${{ steps.changed_files.outputs.build_image == 'true' }} || ${{ steps.variants.outputs.changed_files == 'true' }}
         run: |
           IMAGE_ID=${{ secrets.DOCKERHUB_USERNAME }}/$IMAGE_NAME
 
