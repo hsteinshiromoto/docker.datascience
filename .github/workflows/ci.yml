@@ -44,6 +44,7 @@ jobs:
               - 'poetry.lock'
               - 'pyproject.toml'
               - 'debian-requirements.txt'
+              - '.github/workflows/ci.yml'
 
       - name: Build docker image if it is not on registry
         if: steps.changed_files.outputs.build_image == 'true'
@@ -102,9 +103,10 @@ jobs:
               - 'Makefile'
               - 'poetry.lock'
               - 'pyproject.toml'
+              - '.github/workflows/ci.yml'
 
       - name: Build docker image if file changes
-        if: steps.variants.outputs.changed_files == 'true'
+        if: ${{ steps.changed_files.outputs.build_image == 'true' }} || ${{ steps.variants.outputs.changed_files == 'true' }}
         run: make image_${{ matrix.variant }}
         
       - name: Login to Dockerhub
