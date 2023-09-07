@@ -81,6 +81,8 @@ jobs:
     needs: build_data_science_image
     name: Build Variant Images
     runs-on: ubuntu-latest
+    outputs:
+      docker_version: ${{ steps.variants.outputs.changed_files }}
     strategy:
       matrix:
        variant: [keras, pymc, sklearn, pycaret, dask]
@@ -91,26 +93,29 @@ jobs:
 
       - name: Detecting file changes
         uses: dorny/paths-filter@v2
-        id: changed_files
+        id: variants
         with:
           base: dev
           filters: |
-            build_image:
+            changed_files:
               - 'Dockerfile.${{ matrix.variant }}'
               - 'Makefile'
               - 'poetry.lock'
               - 'pyproject.toml'
 
-      - name: Build docker image if it is not on registry
+      - name: Build docker image if file changes
+        if: steps.variants.outputs.changed_files == 'true'
         run: make image_${{ matrix.variant }}
         
       - name: Login to Dockerhub
+        if: steps.variants.outputs.changed_files == 'true'
         uses: docker/login-action@v1
         with: 
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Push image to Docker hub Registry
+        if: steps.variants.outputs.changed_files == 'true'
         run: |
           IMAGE_ID=${{ secrets.DOCKERHUB_USERNAME }}/$IMAGE_NAME
 
